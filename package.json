@@ -4,13 +4,26 @@
   "description": "A learning game for teaching the concepts of recursion",
   "main": "index.js",
   "scripts": {
+    "build-client-watch": "webpack -w",
+    "start-server": "nodemon index.js -e html,js,scss --ignore public",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "start-dev": "NODE_ENV='development' npm run build-client-watch & npm run start-server"
   },
   "author": "Jasmina",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
     "phaser": "^2.6.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "webpack": "^2.2.1",
+    "webpack-livereload-plugin": "^1.0.0"
   }
 }
