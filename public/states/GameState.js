@@ -11,6 +11,10 @@ const GameState = {
     game.load.image("tileset", "/assets/tiles/tileset.png", 32, 32)
 
     game.load.image("func", "/assets/Function.png")
+    game.load.image("returnStatement", "/assets/Return.png")
+    game.load.image("ifStatement", "/assets/If.png")
+    game.load.image("executeBtn", "/assets/buttons/Execute.png")
+    game.load.image("executeBtnPressed", "/assets/buttons/ExecutePressed.png")
     game.load.spritesheet("kitty", "/assets/pusheen.png", 375, 300)
   },
 
@@ -28,60 +32,78 @@ const GameState = {
     func = game.add.group()
     func.enableBody = true
 
+    firstFunc = func.create(100, 50, "func")
+    firstFunc.inputEnabled = true
+    firstFunc.input.enableDrag(true)
+    game.physics.arcade.enable(firstFunc)
+    firstFunc.body.immovable = true
+
+    ifStatement = game.add.group()
+    ifStatement.enableBody = true
+
+    firstIf = ifStatement.create(350, 50, "ifStatement")
+    firstIf.inputEnabled = true
+    firstIf.input.enableDrag(true)
+    game.physics.arcade.enable(firstIf)
+    firstIf.body.immovable = true
+
+    returnStatement = game.add.group()
+    returnStatement.enableBody = true
+
+    firstReturn = returnStatement.create(500, 50, "returnStatement")
+    firstReturn.inputEnabled = true
+    firstReturn.input.enableDrag(true)
+    game.physics.arcade.enable(firstReturn)
+    firstReturn.body.immovable = true
+
     ground.resizeWorld()
 
     map.setCollisionBetween(1, 100, true, "ground")
 
-    for (let i = 0; i < 5; i++) {
-      let funcInstance = game.add.sprite(100, 50 + i * 128, "func")
-      funcInstance.inputEnabled = true
-      funcInstance.input.enableDrag(true)
-      game.physics.arcade.enable(funcInstance)
-    }
+    executeBtn = game.add.button(
+      game.world.centerX - 50,
+      94,
+      "executeBtn",
+      executeFunc,
+      this,
+      2,
+      1,
+      0
+    )
 
-    player = game.add.sprite(5, 5, "kitty")
-    player.scale.setTo(0.25, 0.25)
-
-    game.physics.arcade.enable(player)
-    player.body.setSize(260, 175, 50, 75)
-    player.body.bounce.y = 0.2
-    player.body.gravity.y = 500
-
-    player.animations.add("left", [0, 1, 2, 3], 10, true)
-    player.animations.add("right", [4, 5, 6, 7], 10, true)
-
-    cursors = game.input.keyboard.createCursorKeys()
-    left = game.input.keyboard.addKey(Phaser.Keyboard.H)
-    right = game.input.keyboard.addKey(Phaser.Keyboard.L)
-    up = game.input.keyboard.addKey(Phaser.Keyboard.K)
-    player.body.collideWorldBounds = true
-    func.body.collideWorldBounds = true
+    executeBtn.scale.setTo(0.5, 0.5)
   },
 
   update: function() {
-    // var hitPlatform = game.physics.arcade.collide(player, platforms)
     game.physics.arcade.collide(player, ground)
-    game.physics.arcade.collide(func, ground)
-    func.body.immovable = true
-    if (game.physics.arcade.collide(func, player)) player.y += 128
-    player.body.velocity.x = 0
-
-    if (cursors.left.isDown || left.isDown) {
-      //  Move to the left
-      player.body.velocity.x = -150
-
-      player.animations.play("left")
-    } else if (cursors.right.isDown || right.isDown) {
-      //  Move to the right
-      player.body.velocity.x = 150
-
-      player.animations.play("right")
-    } else {
-      //  Stand still
-      player.animations.stop()
+    // game.physics.arcade.overlap(func, ground)
+    if (game.physics.arcade.overlap(player, func, onCollision)) {
+      if (!player.inIf) {
+        if (player.y > 500) {
+          player.kill()
+          game.add.text(0, 0, "Max Cat-Stack Exceeded")
+          execute = false
+        }
+        player.x = 5
+        player.y += 128
+        player.recurse = true
+      }
     }
-    if ((cursors.up.isDown || up.isDown) && player.body.onFloor()) {
-      player.body.velocity.y = -350
+    if (game.physics.arcade.overlap(player, returnStatement, onCollision)) {
+      if (player.y < 100) {
+        player.kill()
+        if (!player.recurse) game.add.text(0, 0, "You didn't use Re-purrrr-sion")
+        else game.add.text(0, 0, "You've solved the Re-purrrr-sion")
+        execute = false
+      } else {
+      player.x = 5
+      player.y -= 128
+    }}
+    if (game.physics.arcade.overlap(player, ifStatement, onCollision) && player.y > 500)
+      player.inIf = true
+    if (execute) {
+      player.body.velocity.x = 50
+      player.animations.play("right")
     }
   }
 }
