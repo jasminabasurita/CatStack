@@ -25,6 +25,9 @@ const GameState = {
     ground = map.createLayer("ground")
     foreground = map.createLayer("foreground")
 
+    func = game.add.group()
+    func.enableBody = true
+
     ground.resizeWorld()
 
     map.setCollisionBetween(1, 100, true, "ground")
