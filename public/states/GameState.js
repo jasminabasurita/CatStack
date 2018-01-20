@@ -25,14 +25,16 @@ const GameState = {
     ground = map.createLayer("ground")
     foreground = map.createLayer("foreground")
 
-    // ground.resizeWorld()
+    ground.resizeWorld()
 
-    map.setCollisionBetween(1, 100, true, 'ground')
+    map.setCollisionBetween(1, 100, true, "ground")
 
-
-    func = game.add.sprite(5, 5, "func")
-    func.inputEnabled = true
-    func.input.enableDrag(true)
+    for (let i = 0; i < 5; i++) {
+      let funcInstance = game.add.sprite(100, 50 + i * 128, "func")
+      funcInstance.inputEnabled = true
+      funcInstance.input.enableDrag(true)
+      game.physics.arcade.enable(funcInstance)
+    }
 
     player = game.add.sprite(5, 5, "kitty")
     player.scale.setTo(0.25, 0.25)
@@ -50,11 +52,15 @@ const GameState = {
     right = game.input.keyboard.addKey(Phaser.Keyboard.L)
     up = game.input.keyboard.addKey(Phaser.Keyboard.K)
     player.body.collideWorldBounds = true
+    func.body.collideWorldBounds = true
   },
 
   update: function() {
     // var hitPlatform = game.physics.arcade.collide(player, platforms)
     game.physics.arcade.collide(player, ground)
+    game.physics.arcade.collide(func, ground)
+    func.body.immovable = true
+    if (game.physics.arcade.collide(func, player)) player.y += 128
     player.body.velocity.x = 0
 
     if (cursors.left.isDown || left.isDown) {
@@ -70,9 +76,8 @@ const GameState = {
     } else {
       //  Stand still
       player.animations.stop()
-
     }
-    if ((cursors.up.isDown || up.isDown) && player.body.touching.down) {
+    if ((cursors.up.isDown || up.isDown) && player.body.onFloor()) {
       player.body.velocity.y = -350
     }
   }
