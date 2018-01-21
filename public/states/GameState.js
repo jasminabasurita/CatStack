@@ -85,7 +85,7 @@ const GameState = {
       if (!player.inIf) {
         if (player.y > 500) {
           player.kill()
-          game.add.text(0, 0, "Max Cat-Stack Exceeded")
+          message = game.add.text(0, 0, "Max Cat-Stack Exceeded")
           cleanSlate()
           execute = false
         }
@@ -98,9 +98,9 @@ const GameState = {
       if (player.y < 100) {
         player.kill()
         if (!player.recurse) {
-          game.add.text(0, 0, "You didn't use Re-purrrr-sion")
+          message = game.add.text(0, 0, "You didn't use Re-purrrr-sion")
         } else {
-          game.add.text(0, 0, "You've solved the Re-purrrr-sion")
+          message = game.add.text(0, 0, "You've solved the Re-purrrr-sion")
         }
         cleanSlate()
         execute = false
