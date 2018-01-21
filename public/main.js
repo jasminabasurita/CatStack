@@ -17,6 +17,8 @@ let background
 let background2
 let foreground
 let execute
+let slickUI
+let speed = 50
 
 game.state.add('GameState', GameState)
 game.state.start('GameState')

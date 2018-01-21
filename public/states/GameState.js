@@ -2,6 +2,8 @@
 
 const GameState = {
   preload: function() {
+    slickUI = game.plugins.add(Phaser.Plugin.SlickUI)
+    slickUI.load("assets/ui/kenney.json")
     game.load.tilemap(
       "tilemap",
       "/assets/tiles/level1.json",
@@ -21,6 +23,7 @@ const GameState = {
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
+    // Tilemap for background, foreground, and platforms
     map = game.add.tilemap("tilemap")
     map.addTilesetImage("tileset", "tileset")
 
@@ -29,37 +32,39 @@ const GameState = {
     ground = map.createLayer("ground")
     foreground = map.createLayer("foreground")
 
+    // Panel for adjusting pusheen speed
+    var panel
+    slickUI.add(
+      (panel = new SlickUI.Element.Panel(game.width - 250, 8, 242, 38))
+    )
+    panel
+      .add(new SlickUI.Element.Text(1, 1, "Change Speed", 9))
+      .centerHorizontally().text.alpha = 0.8
+    var slider = new SlickUI.Element.Slider(5, 15, 220, 0)
+    panel.add(slider)
+    slider.onDrag.add(val => {
+      speed = val * 500 + 50
+    })
+
+    // Function statements
     func = game.add.group()
     func.enableBody = true
 
-    firstFunc = func.create(100, 50, "func")
-    firstFunc.inputEnabled = true
-    firstFunc.input.enableDrag(true)
-    game.physics.arcade.enable(firstFunc)
-    firstFunc.body.immovable = true
-
+    // If Statements
     ifStatement = game.add.group()
     ifStatement.enableBody = true
 
-    firstIf = ifStatement.create(350, 50, "ifStatement")
-    firstIf.inputEnabled = true
-    firstIf.input.enableDrag(true)
-    game.physics.arcade.enable(firstIf)
-    firstIf.body.immovable = true
-
+    // Return Statements
     returnStatement = game.add.group()
     returnStatement.enableBody = true
 
-    firstReturn = returnStatement.create(500, 50, "returnStatement")
-    firstReturn.inputEnabled = true
-    firstReturn.input.enableDrag(true)
-    game.physics.arcade.enable(firstReturn)
-    firstReturn.body.immovable = true
+    cleanSlate() //creates starting layout
 
     ground.resizeWorld()
 
     map.setCollisionBetween(1, 100, true, "ground")
 
+    // Button to execute functions with cats
     executeBtn = game.add.button(
       game.world.centerX - 50,
       94,
@@ -76,12 +81,12 @@ const GameState = {
 
   update: function() {
     game.physics.arcade.collide(player, ground)
-    // game.physics.arcade.overlap(func, ground)
     if (game.physics.arcade.overlap(player, func, onCollision)) {
       if (!player.inIf) {
         if (player.y > 500) {
           player.kill()
           game.add.text(0, 0, "Max Cat-Stack Exceeded")
+          cleanSlate()
           execute = false
         }
         player.x = 5
@@ -92,17 +97,26 @@ const GameState = {
     if (game.physics.arcade.overlap(player, returnStatement, onCollision)) {
       if (player.y < 100) {
         player.kill()
-        if (!player.recurse) game.add.text(0, 0, "You didn't use Re-purrrr-sion")
-        else game.add.text(0, 0, "You've solved the Re-purrrr-sion")
+        if (!player.recurse) {
+          game.add.text(0, 0, "You didn't use Re-purrrr-sion")
+        } else {
+          game.add.text(0, 0, "You've solved the Re-purrrr-sion")
+        }
+        cleanSlate()
         execute = false
       } else {
-      player.x = 5
-      player.y -= 128
-    }}
-    if (game.physics.arcade.overlap(player, ifStatement, onCollision) && player.y > 500)
+        player.x = 5
+        player.y -= 128
+      }
+    }
+    if (
+      game.physics.arcade.overlap(player, ifStatement, onCollision) &&
+      player.y > 500
+    ) {
       player.inIf = true
+    }
     if (execute) {
-      player.body.velocity.x = 50
+      player.body.velocity.x = speed
       player.animations.play("right")
     }
   }
