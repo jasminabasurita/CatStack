@@ -76,7 +76,25 @@ const createMessage = (str, type) => {
       tryAgainBtn.anchor.y = 0.5
       break
     case "NEXT":
-      console.log("next")
+      let nextLevelBtn = game.add.button(
+        game.world.centerX,
+        385,
+        "nextLevel",
+        () => {
+          message.kill()
+          messageText.kill()
+          nextLevelBtn.kill()
+          cleanSlate()
+          createMessage("Sorry, next level still in development", "REPLAY")
+        },
+        this,
+        0,
+        0,
+        1
+      )
+      nextLevelBtn.anchor.x = 0.5
+      nextLevelBtn.anchor.y = 0.5
+
       break
     default:
       console.log("play again")

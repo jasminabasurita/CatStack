@@ -30,6 +30,12 @@ const GameState = {
     )
     game.load.spritesheet("kitty", "/assets/pusheen.png", 375, 300)
     game.load.spritesheet(
+      "nextLevel",
+      "/assets/buttons/NextLevelSheet.png",
+      192,
+      64
+    )
+    game.load.spritesheet(
       "play",
       "/assets/buttons/PlayButtonSheet.png",
       192,
