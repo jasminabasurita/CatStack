@@ -1,0 +1,5 @@
+body {
+  display: flex;
+  justify-content: space-around;
+  background: #43444b;
+}
