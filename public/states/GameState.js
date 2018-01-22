@@ -11,7 +11,7 @@ const GameState = {
       Phaser.Tilemap.TILED_JSON
     )
     game.load.image("tileset", "/assets/tiles/tileset.png", 32, 32)
-
+    game.load.audio("collision", "/assets/collision.mp3")
     game.load.image("func", "/assets/Function.png")
     game.load.image("returnStatement", "/assets/Return.png")
     game.load.image("ifStatement", "/assets/If.png")
@@ -44,6 +44,8 @@ const GameState = {
   },
 
   create: function() {
+    collideSFX = game.add.audio('collision')
+
     game.physics.startSystem(Phaser.Physics.ARCADE)
 
     // Tilemap for background, foreground, and platforms

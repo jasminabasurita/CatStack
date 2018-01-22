@@ -1,4 +1,7 @@
-const onCollision = (player, item) => item.kill()
+const onCollision = (player, item) => {
+  collideSFX.play()
+  item.kill()
+}
 
 const cleanSlate = () => {
   func.children.forEach(child => child.kill())
@@ -37,14 +40,14 @@ const createMessage = (str, type) => {
   messageText.anchor.x = 0.5
   switch (type) {
     case "START":
-      let playBtn = game.add.button(
+      messageBtn = game.add.button(
         game.world.centerX,
         360,
         "play",
         () => {
           message.kill()
           messageText.kill()
-          playBtn.kill()
+          messageBtn.kill()
           cleanSlate()
         },
         this,
@@ -52,19 +55,19 @@ const createMessage = (str, type) => {
         0,
         1
       )
-      playBtn.anchor.x = 0.5
-      playBtn.anchor.y = 0.5
+      messageBtn.anchor.x = 0.5
+      messageBtn.anchor.y = 0.5
       break
 
     case "REPLAY":
-      let tryAgainBtn = game.add.button(
+      messageBtn = game.add.button(
         game.world.centerX,
         385,
         "tryAgainBtn",
         () => {
           message.kill()
           messageText.kill()
-          tryAgainBtn.kill()
+          messageBtn.kill()
           cleanSlate()
         },
         this,
@@ -72,18 +75,18 @@ const createMessage = (str, type) => {
         0,
         1
       )
-      tryAgainBtn.anchor.x = 0.5
-      tryAgainBtn.anchor.y = 0.5
+      messageBtn.anchor.x = 0.5
+      messageBtn.anchor.y = 0.5
       break
     case "NEXT":
-      let nextLevelBtn = game.add.button(
+      messageBtn = game.add.button(
         game.world.centerX,
         385,
         "nextLevel",
         () => {
           message.kill()
           messageText.kill()
-          nextLevelBtn.kill()
+          messageBtn.kill()
           cleanSlate()
           createMessage("Sorry, next level still in development", "REPLAY")
         },
@@ -92,8 +95,8 @@ const createMessage = (str, type) => {
         0,
         1
       )
-      nextLevelBtn.anchor.x = 0.5
-      nextLevelBtn.anchor.y = 0.5
+      messageBtn.anchor.x = 0.5
+      messageBtn.anchor.y = 0.5
 
       break
     default:

@@ -1,6 +1,10 @@
 const executeFunc = () => {
   if (!execute) {
-    if (message) message.kill()
+    if (message) {
+      message.kill()
+      messageText.kill()
+      messageBtn.kill()
+    }
     for (let i = 1; i < 5; i++) {
       let funcInstance = func.create(firstFunc.x, 50 + i * 128, "func")
       game.physics.arcade.enable(funcInstance)

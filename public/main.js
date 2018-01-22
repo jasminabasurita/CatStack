@@ -20,6 +20,9 @@ let execute
 let slickUI
 let speed = 50
 let message
+let collideSFX
+let messageText
+let messageBtn
 
 game.state.add('GameState', GameState)
 game.state.add('MenuState', MenuState)
