@@ -23,3 +23,63 @@ const cleanSlate = () => {
   game.physics.arcade.enable(firstReturn)
   firstReturn.body.immovable = true
 }
+
+const createMessage = (str, type) => {
+  message = game.add.sprite(game.width / 2, game.height / 2, "message")
+  message.anchor.x = 0.5
+  message.anchor.y = 0.5
+  messageText = game.add.text(game.width / 2, 200, str, {
+    align: "center",
+    fill: "#D5C392",
+    wordWrap: true,
+    wordWrapWidth: 350
+  })
+  messageText.anchor.x = 0.5
+  switch (type) {
+    case "START":
+      let playBtn = game.add.button(
+        game.world.centerX,
+        360,
+        "play",
+        () => {
+          message.kill()
+          messageText.kill()
+          playBtn.kill()
+          cleanSlate()
+        },
+        this,
+        0,
+        0,
+        1
+      )
+      playBtn.anchor.x = 0.5
+      playBtn.anchor.y = 0.5
+      break
+
+    case "REPLAY":
+      let tryAgainBtn = game.add.button(
+        game.world.centerX,
+        385,
+        "tryAgainBtn",
+        () => {
+          message.kill()
+          messageText.kill()
+          tryAgainBtn.kill()
+          cleanSlate()
+        },
+        this,
+        0,
+        0,
+        1
+      )
+      tryAgainBtn.anchor.x = 0.5
+      tryAgainBtn.anchor.y = 0.5
+      break
+    case "NEXT":
+      console.log("next")
+      break
+    default:
+      console.log("play again")
+      break
+  }
+}

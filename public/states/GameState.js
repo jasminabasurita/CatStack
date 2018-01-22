@@ -15,8 +15,26 @@ const GameState = {
     game.load.image("func", "/assets/Function.png")
     game.load.image("returnStatement", "/assets/Return.png")
     game.load.image("ifStatement", "/assets/If.png")
-    game.load.spritesheet("executeBtn", "/assets/buttons/ExecuteSheet.png", 192, 64)
+    game.load.image("message", "/assets/buttons/Message.png")
+    game.load.spritesheet(
+      "executeBtn",
+      "/assets/buttons/ExecuteSheet.png",
+      192,
+      64
+    )
+    game.load.spritesheet(
+      "tryAgainBtn",
+      "/assets/buttons/TryAgainSheet.png",
+      192,
+      64
+    )
     game.load.spritesheet("kitty", "/assets/pusheen.png", 375, 300)
+    game.load.spritesheet(
+      "play",
+      "/assets/buttons/PlayButtonSheet.png",
+      192,
+      128
+    )
   },
 
   create: function() {
@@ -30,7 +48,7 @@ const GameState = {
     background2 = map.createLayer("background2")
     ground = map.createLayer("ground")
     foreground = map.createLayer("foreground")
-    message = game.add.text(0, 0, "Solve A Simple Countdown")
+    createMessage("Solve A Simple Countdown", "START")
 
     // Panel for adjusting pusheen speed
     var panel
@@ -85,8 +103,7 @@ const GameState = {
       if (!player.inIf) {
         if (player.y > 500) {
           player.kill()
-          message = game.add.text(0, 0, "Max Cat-Stack Exceeded")
-          cleanSlate()
+          createMessage("Max Cat-Stack Exceeded", "REPLAY")
           execute = false
         }
         player.x = 5
@@ -98,11 +115,10 @@ const GameState = {
       if (player.y < 100) {
         player.kill()
         if (!player.recurse) {
-          message = game.add.text(0, 0, "You didn't use Re-purrrr-sion")
+          createMessage("You didn't use Re-purrrr-sion", "REPLAY")
         } else {
-          message = game.add.text(0, 0, "You've solved the Re-purrrr-sion")
+          createMessage("You've solved the Re-purrrr-sion", "NEXT")
         }
-        cleanSlate()
         execute = false
       } else {
         player.x = 5
@@ -122,8 +138,7 @@ const GameState = {
     if (player && player.body.blocked.right === true) {
       player.body.blocked.right = false
       player.kill()
-      message = game.add.text(0, 0, "Function not executed properly")
-      cleanSlate()
+      createMessage("Function not executed properly", "REPLAY")
       execute = false
     }
   }
