@@ -22,4 +22,6 @@ let speed = 50
 let message
 
 game.state.add('GameState', GameState)
-game.state.start('GameState')
+game.state.add('MenuState', MenuState)
+game.state.add('InstructionState', InstructionState)
+game.state.start('MenuState')

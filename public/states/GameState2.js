@@ -6,16 +6,17 @@ const GameState = {
     slickUI.load("assets/ui/kenney.json")
     game.load.tilemap(
       "tilemap",
-      "/assets/tiles/level1.json",
+      "/assets/tiles/level2.json",
       null,
       Phaser.Tilemap.TILED_JSON
     )
     game.load.image("tileset", "/assets/tiles/tileset.png", 32, 32)
 
-    game.load.image("func", "/assets/Function.png")
-    game.load.image("returnStatement", "/assets/Return.png")
+    game.load.image("func", "/assets/Function2.png")
+    game.load.image("returnStatement", "/assets/Return2.png")
     game.load.image("ifStatement", "/assets/If.png")
-    game.load.spritesheet("executeBtn", "/assets/buttons/ExecuteSheet.png", 192, 64)
+    game.load.image("executeBtn", "/assets/buttons/Execute.png")
+    game.load.image("executeBtnPressed", "/assets/buttons/ExecutePressed.png")
     game.load.spritesheet("kitty", "/assets/pusheen.png", 375, 300)
   },
 
@@ -30,7 +31,7 @@ const GameState = {
     background2 = map.createLayer("background2")
     ground = map.createLayer("ground")
     foreground = map.createLayer("foreground")
-    message = game.add.text(0, 0, "Solve A Simple Countdown")
+    message = game.add.text(0, 0, "Solve The Fibo-Cat-Ci Sequence")
 
     // Panel for adjusting pusheen speed
     var panel
@@ -71,9 +72,9 @@ const GameState = {
       "executeBtn",
       executeFunc,
       this,
-      0,
-      0,
-      1
+      2,
+      1,
+      0
     )
 
     executeBtn.scale.setTo(0.5, 0.5)
@@ -128,3 +129,4 @@ const GameState = {
     }
   }
 }
+
